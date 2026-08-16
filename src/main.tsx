@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
+
 import {
   Trophy,
   LayoutDashboard,
@@ -9,8 +10,10 @@ import {
   Check,
   RotateCcw,
   Plus,
+  Calculator,
 } from "lucide-react";
 import "./index.css";
+import InGameCounter from "./InGameCounter";
 
 type Player = { id: string; name: string; groupId: string };
 type Group = { id: string; name: string; playerIds: string[] };
@@ -42,7 +45,16 @@ type Row = {
   opponents: { id: string; result: number }[];
 };
 const uid = () => Math.random().toString(36).slice(2, 9);
-const starter = ["Aung", "Min", "Ko Ko", "Zaw", "Htet", "Myo", "Tun", "Naing"];
+const starter = [
+  "Nyi Nyi",
+  "Arkar",
+  "Min Thant",
+  "Emo",
+  "Lin Khant",
+  "SMO",
+  "Jar Gyi",
+  "Thurein",
+];
 function make(name = "Friendly Snooker Cup", n = 8, g = 2, q = 2): Tournament {
   const gs = Array.from({ length: g }, (_, i) => ({
     id: uid(),
@@ -217,6 +229,11 @@ function App() {
       label: "Matches",
     },
     {
+      key: "counter",
+      icon: Calculator,
+      label: "In-Game Counting",
+    },
+    {
       key: "players",
       icon: Users,
       label: "Players",
@@ -272,9 +289,14 @@ function App() {
           <p className="text-sm text-slate-500 mb-6">
             Win = 1 PT • Ranking: PT → Diff → PF → PA → Head-to-Head
           </p>
-          {tab === "dashboard" && <Dashboard t={t} rows={rows} />}{" "}
-          {tab === "matches" && <Matches t={t} setT={setT} />}{" "}
-          {tab === "players" && <Players t={t} setT={setT} />}{" "}
+          {tab === "dashboard" && <Dashboard t={t} rows={rows} />}
+
+          {tab === "matches" && <Matches t={t} setT={setT} />}
+
+          {tab === "counter" && <InGameCounter />}
+
+          {tab === "players" && <Players t={t} setT={setT} />}
+
           {tab === "settings" && <Settings t={t} setT={setT} />}
         </main>
       </div>
