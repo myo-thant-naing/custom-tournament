@@ -11,6 +11,7 @@ import {
   Plus,
 } from "lucide-react";
 import "./index.css";
+
 type Player = { id: string; name: string; groupId: string };
 type Group = { id: string; name: string; playerIds: string[] };
 type Match = {
@@ -204,6 +205,28 @@ function sorter(a: Row, b: Row): number {
   return a.player.name.localeCompare(b.player.name);
 }
 function App() {
+  const navigation = [
+    {
+      key: "dashboard",
+      icon: LayoutDashboard,
+      label: "Overview",
+    },
+    {
+      key: "matches",
+      icon: Swords,
+      label: "Matches",
+    },
+    {
+      key: "players",
+      icon: Users,
+      label: "Players",
+    },
+    {
+      key: "settings",
+      icon: Settings2,
+      label: "Tournament",
+    },
+  ];
   const [t, setT] = useState<Tournament>(() => {
     const x = localStorage.getItem("bp");
     return x ? JSON.parse(x) : make();
@@ -229,18 +252,17 @@ function App() {
       <div className="max-w-7xl mx-auto p-5 grid lg:grid-cols-[210px_1fr] gap-6">
         <aside>
           <nav className="card p-2">
-            {[
-              ["dashboard", LayoutDashboard, "Overview"],
-              ["matches", Swords, "Matches"],
-              ["players", Users, "Players"],
-              ["settings", Settings2, "Tournament"],
-            ].map(([k, I, l]) => (
+            {navigation.map(({ key, icon: Icon, label }) => (
               <button
-                key={k as string}
-                onClick={() => setTab(k as string)}
-                className={`w-full flex gap-3 p-3 rounded-xl text-sm font-bold ${tab === k ? "bg-indigo-50 text-indigo-700" : "text-slate-600"}`}>
-                <I size={17} />
-                {l}
+                key={key}
+                onClick={() => setTab(key)}
+                className={`w-full flex gap-3 p-3 rounded-xl text-sm font-bold ${
+                  tab === key
+                    ? "bg-indigo-50 text-indigo-700"
+                    : "text-slate-600"
+                }`}>
+                <Icon size={17} />
+                {label}
               </button>
             ))}
           </nav>
